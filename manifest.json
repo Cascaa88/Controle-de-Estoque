@@ -73,7 +73,7 @@
       "url": "/?startLive",
       "icons": [
         {
-          "src": "/assets/icon/256.png",
+          "src": "/icons/image 256x256.png",
           "sizes": "256x256"
         }
       ]
