@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #0097b2;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 30px;
+            color: #34495e;
+        }
+
+        .section-description {
+            background-color: #eaf4f7;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            color: #4a6572;
+        }
+
+        .form-section {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            background-color: #0097b2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .form-group button:hover {
+            background-color: #00484c;
+        }
+
+        .filters {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filters label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .filters select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .item-card {
+            background-color: #fdfdfd;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .item-card h3 {
+            margin-top: 0;
+            color: #3498db;
+            font-size: 1.4em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        .item-card p {
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .item-card strong {
+            color: #555;
+        }
+
+        .item-card .status-tags {
+            margin-top: 10px;
+        }
+
+        .item-card .status-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .item-card .status-tag.falta {
+            background-color: #e74c3c; /* Red */
+        }
+
+        .item-card .status-tag.validade {
+            background-color: #f39c12; /* Orange */
+        }
+
+        .item-card .status-tag.ok {
+            background-color: #0097b2; /* Green */
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .item-list {
+                grid-template-columns: 1fr;
+            }
+            .form-group input[type="text"],
+            .form-group input[type="number"],
+            .form-group input[type="date"],
+            .form-group select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Estoque</h1>
+
+        <div class="section-description">
+            <p>Este sistema simples ajuda a organizar o estoque, dividindo os materiais em três salas principais: **Alimentação**, **Manutenção/Escritório** e **Descartáveis/Limpeza**. Adicione itens, visualize por sala e controle o status.</p>
+        </div>
+
+        <h2>📦 Adicionar Novo Item ao Estoque</h2>
+        <div class="form-section">
+            <div class="form-group">
+                <label for="itemName">Nome do Item:</label>
+                <input type="text" id="itemName" placeholder="Ex: Luva descartável M" required>
+            </div>
+            <div class="form-group">
+                <label for="itemQuantity">Quantidade:</label>
+                <input type="number" id="itemQuantity" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+                <label for="itemRoom">Sala de Armazenamento:</label>
+                <select id="itemRoom" required>
+                    <option value="">Selecione a Sala</option>
+                    <option value="alimentacao">Materiais de Alimentação</option>
+                    <option value="manutencao">Materiais de Manutenção/Escritório</option>
+                    <option value="descartaveis">Descartáveis e Limpeza</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="itemLocation">Local Específico (Prateleira, Armário, etc.):</label>
+                <input type="text" id="itemLocation" placeholder="Ex: Prateleira A-3, Armário 2">
+            </div>
+            <div class="form-group">
+                <label for="itemValidity">Data de Validade (opcional):</label>
+                <input type="date" id="itemValidity">
+            </div>
+            <div class="form-group">
+                <label for="itemStatus">Status:</label>
+                <select id="itemStatus">
+                    <option value="ok">Em Estoque</option>
+                    <option value="falta">Em Falta</option>
+                    <option value="validade">Próximo da Validade</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button onclick="addItem()">Adicionar Item</button>
+            </div>
+        </div>
+
+        <h2>📊 Itens em Estoque</h2>
+        <div class="filters">
+            <label for="filterRoom">Filtrar por Sala:</label>
+            <select id="filterRoom" onchange="filterItems()">
+                <option value="all">Todas as Salas</option>
+                <option value="alimentacao">Materiais de Alimentação</option>
+                <option value="manutencao">Materiais de Manutenção/Escritório</option>
+                <option value="descartaveis">Descartáveis e Limpeza</option>
+            </select>
+        </div>
+
+        <div id="itemList" class="item-list">
+            </div>
+    </div>
+
+    <script>
+        // JavaScript
+        let estoque = JSON.parse(localStorage.getItem('estoqueHospitalar')) || [];
+
+        function renderItems(filter = 'all') {
+            const itemListDiv = document.getElementById('itemList');
+            itemListDiv.innerHTML = ''; // Limpa a lista antes de renderizar
+
+            const filteredEstoque = filter === 'all'
+                ? estoque
+                : estoque.filter(item => item.room === filter);
+
+            if (filteredEstoque.length === 0) {
+                itemListDiv.innerHTML = '<p style="text-align: center; color: #777;">Nenhum item nesta categoria. Adicione um novo item acima!</p>';
+                return;
+            }
+
+            filteredEstoque.forEach((item, index) => {
+                const itemCard = document.createElement('div');
+                itemCard.classList.add('item-card');
+                itemCard.setAttribute('data-room', item.room);
+
+                const validityStatus = item.validity && new Date(item.validity) < new Date()
+                    ? ' (VENCIDO)' : (item.validity ? ' (Vence em ' + item.validity + ')' : '');
+
+                let statusTagClass = '';
+                let statusTagText = '';
+                if (item.status === 'falta') {
+                    statusTagClass = 'falta';
+                    statusTagText = 'EM FALTA';
+                } else if (item.status === 'validade') {
+                    statusTagClass = 'validade';
+                    statusTagText = 'PRÓXIMO DA VALIDADE';
+                } else {
+                    statusTagClass = 'ok';
+                    statusTagText = 'EM ESTOQUE';
+                }
+
+                itemCard.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p><strong>Quantidade:</strong> ${item.quantity}</p>
+                    <p><strong>Sala:</strong> ${getRoomDisplayName(item.room)}</p>
+                    <p><strong>Local:</strong> ${item.location || 'Não especificado'}</p>
+                    <p><strong>Validade:</strong> ${item.validity || 'Não informada'}${validityStatus}</p>
+                    <div class="status-tags">
+                        <span class="status-tag ${statusTagClass}">${statusTagText}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteItem(${index})">Excluir</button>
+                `;
+                itemListDiv.appendChild(itemCard);
+            });
+        }
+
+        function getRoomDisplayName(roomValue) {
+            switch (roomValue) {
+                case 'alimentacao': return 'Materiais de Alimentação';
+                case 'manutencao': return 'Materiais de Manutenção/Escritório';
+                case 'descartaveis': return 'Descartáveis e Limpeza';
+                default: return 'Desconhecida';
+            }
+        }
+
+        function addItem() {
+            const itemName = document.getElementById('itemName').value;
+            const itemQuantity = parseInt(document.getElementById('itemQuantity').value);
+            const itemRoom = document.getElementById('itemRoom').value;
+            const itemLocation = document.getElementById('itemLocation').value;
+            const itemValidity = document.getElementById('itemValidity').value;
+            const itemStatus = document.getElementById('itemStatus').value;
+
+            if (!itemName || isNaN(itemQuantity) || itemRoom === '') {
+                alert('Por favor, preencha o nome do item, a quantidade e selecione a sala.');
+                return;
+            }
+
+            const newItem = {
+                name: itemName,
+                quantity: itemQuantity,
+                room: itemRoom,
+                location: itemLocation,
+                validity: itemValidity,
+                status: itemStatus
+            };
+
+            estoque.push(newItem);
+            localStorage.setItem('estoqueHospitalar', JSON.stringify(estoque));
+            renderItems(document.getElementById('filterRoom').value); // Renderiza com o filtro atual
+            clearForm();
+        }
+
+        function deleteItem(index) {
+            if (confirm('Tem certeza que deseja excluir este item?')) {
+                // Ajusta o índice para o estoque original, não o filtrado
+                const currentFilter = document.getElementById('filterRoom').value;
+                if (currentFilter === 'all') {
+                    estoque.splice(index, 1);
+                } else {
+                    // Se estiver filtrado, precisamos encontrar o índice no array original
+                    const itemToDelete = estoque.filter(item => item.room === currentFilter)[index];
+                    const originalIndex = estoque.indexOf(itemToDelete);
+                    if (originalIndex > -1) {
+                        estoque.splice(originalIndex, 1);
+                    }
+                }
+
+                localStorage.setItem('estoqueHospitalar', JSON.stringify(estoque));
+                renderItems(currentFilter);
+            }
+        }
+
+
+        function filterItems() {
+            const selectedRoom = document.getElementById('filterRoom').value;
+            renderItems(selectedRoom);
+        }
+
+        function clearForm() {
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemQuantity').value = '1';
+            document.getElementById('itemRoom').value = '';
+            document.getElementById('itemLocation').value = '';
+            document.getElementById('itemValidity').value = '';
+            document.getElementById('itemStatus').value = 'ok';
+        }
+
+        // Renderiza os itens ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            renderItems();
+        });
+    </script>
+</body>
+</html>

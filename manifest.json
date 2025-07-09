@@ -1,0 +1,82 @@
+{
+  "id": "/",
+  "dir": "ltr",
+  "lang": "pt",
+  "name": "Controle de Estoque",
+  "scope": "/",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "Controle de Estoque",
+  "theme_color": "#FFFFFF",
+  "description": "Controle seu estoque de forma simples e eficiente",
+  "orientation": "any",
+  "background_color": "#FFFFFF",
+  "prefer_related_applications": false,
+  "display_override": [
+    "window-controls-overlay"
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screen.png"
+    },
+    {
+      "src": "assets/screen.png"
+    },
+    {
+      "src": "assets/screen.png"
+    }
+  ],
+  "features": [
+    "Cross Platform",
+    "low-latency inking",
+    "fast",
+    "useful AI"
+  ],
+  "icons": [
+    {
+      "src": "/icons/image 192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/image 192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/image 512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/image 512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "productivity"
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {},
+  "shortcuts": [
+    {
+      "name": "Start Live Session",
+      "short_name": "Start Live",
+      "description": "Jump direction into starting or joining a live session",
+      "url": "/?startLive",
+      "icons": [
+        {
+          "src": "/assets/icon/256.png",
+          "sizes": "256x256"
+        }
+      ]
+    }
+  ]
+}
